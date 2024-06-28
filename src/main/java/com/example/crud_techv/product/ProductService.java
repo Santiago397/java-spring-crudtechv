@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -66,6 +67,30 @@ public class ProductService {
         return new ResponseEntity<>(
                 data,
                 HttpStatus.CREATED
+        );
+    }
+
+    public ResponseEntity<Object> removeProduct(Long id)   {
+
+        Optional<Product> product = productRepository.findById(id);
+        HashMap<String, Object> data = new HashMap<>();
+
+        if (!product.isPresent()) {
+            data.put("error", true);
+            data.put("message", "Product not found");
+            return new ResponseEntity<>(
+                    data,
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+        productRepository.deleteById(id);
+        data.put("data", product);
+        data.put("message", "Product successfully deleted");
+
+        return new ResponseEntity<>(
+                data,
+                HttpStatus.OK
         );
     }
 }
