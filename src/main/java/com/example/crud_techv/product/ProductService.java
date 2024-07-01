@@ -52,7 +52,7 @@ public class ProductService {
         Optional<Product> res = productRepository.findProductByName(product.getName());
         HashMap<String, Object> data = new HashMap<>();
 
-        if (res.isPresent()) {
+        if (res.isPresent() && product.getId() == null) {
             data.put("error", true);
             data.put("message", "Product already created with the same name");
             return new ResponseEntity<>(
@@ -61,9 +61,14 @@ public class ProductService {
             );
         }
 
+        data.put("message", "Product successfully created");
+
+        if (product.getId() != null) {
+            data.put("message", "Product successfully updated");
+        }
+
         productRepository.save(product);
         data.put("data", product);
-        data.put("message", "Product successfully created");
         return new ResponseEntity<>(
                 data,
                 HttpStatus.CREATED

@@ -41,4 +41,9 @@ public class ProductController {
     public ResponseEntity<Object> deleteProduct (@PathVariable Long id) {
         return this.productService.removeProduct(id);
     }
+
+    @PutMapping
+    public ResponseEntity<Object> updateProduct (@RequestBody Product product) {
+        return this.productService.newProduct(product);
+    }
 }
